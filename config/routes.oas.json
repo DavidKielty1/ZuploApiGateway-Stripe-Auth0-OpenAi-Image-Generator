@@ -1,0 +1,72 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAI Test",
+    "description": "OpenAi",
+    "version": "1.0.0"
+  },
+  "components": {
+    "schemas": {
+      "ImageObject": {
+        "type": "object",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/v1/images": {
+      "x-zuplo-path": {
+        "pathMode": "open-api"
+      },
+      "post": {
+        "summary": "Create Image",
+        "description": "Creates image",
+        "x-zuplo-route": {
+          "corsPolicy": "none",
+          "handler": {
+            "export": "default",
+            "module": "$import(./modules/handlers/openai)",
+            "options": {}
+          },
+          "policies": {
+            "inbound": [
+              "composite-metered-request",
+              "set-headers-inbound"
+            ]
+          }
+        },
+        "operationId": "f9e30d74-56ca-4f1e-bcb3-75fe305ea5e4",
+        "requestBody": {
+          "description": "String required to create image.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageObject"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The created image",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
